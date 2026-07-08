@@ -41,6 +41,46 @@ activities = {
     }
 }
 
+# Additional activities: sports (2), artistic (2), intellectual (2)
+activities.update({
+    "Soccer Club": {
+        "description": "Team practices and intramural matches",
+        "schedule": "Tuesdays and Thursdays, 4:00 PM - 5:30 PM",
+        "max_participants": 22,
+        "participants": ["alex@mergington.edu", "maria@mergington.edu"]
+    },
+    "Basketball Club": {
+        "description": "Learn fundamentals and play pickup games",
+        "schedule": "Wednesdays and Fridays, 4:00 PM - 6:00 PM",
+        "max_participants": 20,
+        "participants": ["noah@mergington.edu", "ava@mergington.edu"]
+    },
+    "Art Club": {
+        "description": "Explore drawing, painting, and mixed media",
+        "schedule": "Mondays, 3:30 PM - 5:00 PM",
+        "max_participants": 18,
+        "participants": ["lily@mergington.edu"]
+    },
+    "Drama Society": {
+        "description": "Acting workshops and theatre productions",
+        "schedule": "Thursdays, 3:30 PM - 6:00 PM",
+        "max_participants": 25,
+        "participants": ["henry@mergington.edu"]
+    },
+    "Math Olympiad": {
+        "description": "Advanced problem solving and contest preparation",
+        "schedule": "Fridays, 3:30 PM - 5:00 PM",
+        "max_participants": 15,
+        "participants": ["sophia@mergington.edu"]
+    },
+    "Science Club": {
+        "description": "Hands-on experiments and science fair projects",
+        "schedule": "Wednesdays, 3:30 PM - 5:00 PM",
+        "max_participants": 20,
+        "participants": ["liam@mergington.edu"]
+    }
+})
+
 
 @app.get("/")
 def root():
@@ -61,6 +101,10 @@ def signup_for_activity(activity_name: str, email: str):
 
     # Get the specific activity
     activity = activities[activity_name]
+
+    # Validate student is not already signed up
+    if email in activity["participants"]:
+        raise HTTPException(status_code=400, detail="Student already signed up for this activity")
 
     # Add student
     activity["participants"].append(email)
